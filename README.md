@@ -287,7 +287,8 @@ The arXiv version is available as:
 
 ## Contact
 
-For questions, please contact:
+For questions, please contact the first author or corresponding authors:
 
+- Luankang Zhang: `zhanglk5@mail.ustc.edu.cn`
 - Hao Wang: `wanghao3@ustc.edu.cn`
 - Wei Guo: `guowei67@huawei.com`
