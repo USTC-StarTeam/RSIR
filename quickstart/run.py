@@ -65,13 +65,12 @@ def run_generation(config: dict):
 
         logger.info(f"Generate parameters: m={m}, k={k}, max_len={max_len}, local_prob={local_prob}, min_len={min_len}")
 
-        save_dir = os.path.join('generated_data', config['data']['dataset'])
-        os.makedirs(save_dir, exist_ok=True)
-        dataset_name = config['data']['dataset']
-
-
         path = os.path.join('dataset', config['data']['dataset'], config['data']['domain_name_list'][0])
-        save_path = os.path.join(path, f"train_augmented_from_{model_fixed_path}_m_{m}_k_{k}_local_prob_{local_prob}.pth")
+        output_trainfile = config.get('output_trainfile', '_1th')
+        if not output_trainfile.startswith('_'):
+            output_trainfile = '_' + output_trainfile
+        save_path = os.path.join(path, f"train{output_trainfile}.pth")
+        logger.info(f"Generated dataset will be saved to: {save_path}")
 
         model_generator.generate_and_save_sequences_parallel(
             save_path=save_path,

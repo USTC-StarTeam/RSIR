@@ -5,6 +5,7 @@ def get_default_parser():
     parser.add_argument('--model', '-m', type=str, default='SASRec', help='model name')
     parser.add_argument('--dataset', '-d', type=str, default='amazon-toys', help='dataset name')
     parser.add_argument('--trainfile', '-t', type=str, default='', help='train file')
+    parser.add_argument('--output_trainfile', type=str, default='_1th', help='generated training file suffix used in generation mode, e.g. _1th')
     parser.add_argument('--device', '-dev', type=str, default=5, help='device')
     
     parser.add_argument('--eval_only', type=bool, default=True, help='Set this flag to run only the special evaluation (Step 3).')

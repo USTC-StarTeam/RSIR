@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RSIR: Recursive Self-Improving Recommendation</title>
+  <meta name="description" content="Project page for RSIR: Recursive Self-Improving Recommendation, accepted to ICML 2026.">
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #5f6f86;
+      --line: #d8dfeb;
+      --paper: #ffffff;
+      --soft: #f5f7fb;
+      --blue: #2454d6;
+      --green: #087443;
+      --gold: #9f5f00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #eef2f7;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100vw - 36px));
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 58px;
+      font-size: 14px;
+    }
+
+    nav strong {
+      font-size: 15px;
+    }
+
+    nav div {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero {
+      padding: 52px 0 38px;
+      background: var(--paper);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 18px 0 16px;
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 720px;
+    }
+
+    .authors {
+      color: #324057;
+      font-size: 14px;
+      margin-bottom: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      border: 1px solid #b8c4d9;
+      background: #fff;
+      color: #24344f;
+      border-radius: 6px;
+      padding: 0 13px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .button.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .figure {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+    }
+
+    .figure img {
+      display: block;
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    .caption {
+      margin: 10px 4px 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    section {
+      padding: 48px 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .section-lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      max-width: 820px;
+      font-size: 16px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .step,
+    .result,
+    .note {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .step strong,
+    .result strong,
+    .note strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .step p,
+    .result p,
+    .note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric {
+      color: var(--green);
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    pre {
+      overflow: auto;
+      background: #111827;
+      color: #e5e7eb;
+      border-radius: 8px;
+      padding: 18px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: "Cascadia Mono", Consolas, monospace;
+    }
+
+    footer {
+      padding: 26px 0 42px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: var(--paper);
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .steps,
+      .results,
+      .notes {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 34px;
+      }
+
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 14px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap">
+      <strong>RSIR</strong>
+      <div>
+        <a href="#method">Method</a>
+        <a href="#results">Results</a>
+        <a href="#code">Code</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">ICML 2026</div>
+          <h1>Can Recommender Systems Teach Themselves?</h1>
+          <p class="subtitle">A recursive self-improving framework with fidelity control for sparse sequential recommendation.</p>
+          <p class="authors">Luankang Zhang, Hao Wang, Zhongzhou Liu, Mingjia Yin, Yonghao Huang, Jiaqi Li, Wei Guo, Yong Liu, Huifeng Guo, Defu Lian, Enhong Chen</p>
+          <div class="buttons">
+            <a class="button primary" href="https://arxiv.org/pdf/2602.15659">Paper</a>
+            <a class="button" href="https://arxiv.org/abs/2602.15659">arXiv</a>
+            <a class="button" href="https://github.com/USTC-StarTeam/RSIR">Code</a>
+            <a class="button" href="#citation">BibTeX</a>
+          </div>
+        </div>
+        <figure class="figure">
+          <img src="assets/rsir-overview.png" alt="Overview of the Recursive Self-Improving Recommendation framework">
+          <figcaption class="caption">Overview of the RSIR loop: train, generate, filter by fidelity, and retrain on the expanded dataset.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="wrap">
+        <h2>Recursive Self-Improvement Without External Teachers</h2>
+        <p class="section-lead">RSIR turns a recommender into its own data generator. The generated data is not accepted blindly: a fidelity check keeps the loop close to plausible user preference trajectories.</p>
+        <div class="steps">
+          <article class="step">
+            <strong>1. Train</strong>
+            <p>Train a recommender on the current dataset using next-item prediction.</p>
+          </article>
+          <article class="step">
+            <strong>2. Generate</strong>
+            <p>Use the trained model to create synthetic user interaction sequences.</p>
+          </article>
+          <article class="step">
+            <strong>3. Filter</strong>
+            <p>Accept generated steps only when they pass the fidelity-based rank check.</p>
+          </article>
+          <article class="step">
+            <strong>4. Retrain</strong>
+            <p>Merge valid synthetic sequences with the training set and train a successor model.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div class="wrap">
+        <h2>Key Findings</h2>
+        <p class="section-lead">The paper reports that RSIR improves performance across datasets, iterations, and backbone models while avoiding the collapse observed when fidelity control is removed.</p>
+        <div class="results">
+          <article class="result">
+            <div class="metric">+8.02%</div>
+            <strong>Single-iteration gain</strong>
+            <p>On Amazon-Sport, the paper reports an 8.02% Recall@10 gain for HSTU after one RSIR iteration.</p>
+          </article>
+          <article class="result">
+            <div class="metric">+13.92%</div>
+            <strong>Cumulative improvement</strong>
+            <p>The same setting reaches a 13.92% Recall@10 gain after three recursive iterations.</p>
+          </article>
+          <article class="result">
+            <div class="metric">w/o vs. w</div>
+            <strong>Fidelity matters</strong>
+            <p>Ablations show that uncontrolled generation can pollute the loop, while fidelity control stabilizes self-improvement.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="code">
+      <div class="wrap">
+        <h2>Code</h2>
+        <p class="section-lead">The repository exposes two modes: `recommendation` for model training and evaluation, and `generation` for RSIR augmented data creation.</p>
+        <div class="notes">
+          <article class="note">
+            <strong>Train on original data</strong>
+            <pre><code>python run.py -m SASRec -d amazon-toys --trainfile "" --mode recommendation --device 0</code></pre>
+          </article>
+          <article class="note">
+            <strong>Generate a paper-style iteration file</strong>
+            <pre><code>python run.py -m SASRec -d amazon-toys --trainfile "" --mode generation \
+  --theta_r_path saved/SASRec/amazon-toys/&lt;checkpoint&gt;.ckpt \
+  --output_trainfile "_1th" --device 0</code></pre>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="citation">
+      <div class="wrap">
+        <h2>Citation</h2>
+        <pre><code>@inproceedings{zhang2026rsir,
+  title = {Can Recommender Systems Teach Themselves? A Recursive Self-Improving Framework with Fidelity Control},
+  author = {Zhang, Luankang and Wang, Hao and Liu, Zhongzhou and Yin, Mingjia and Huang, Yonghao and Li, Jiaqi and Guo, Wei and Liu, Yong and Guo, Huifeng and Lian, Defu and Chen, Enhong},
+  booktitle = {Proceedings of the 43rd International Conference on Machine Learning},
+  series = {Proceedings of Machine Learning Research},
+  volume = {306},
+  year = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">University of Science and Technology of China and Huawei Technologies. Code: <a href="https://github.com/USTC-StarTeam/RSIR">USTC-StarTeam/RSIR</a>.</div>
+  </footer>
+</body>
+</html>
