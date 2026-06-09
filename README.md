@@ -6,7 +6,7 @@
 
 Official code for the ICML 2026 paper on recursive self-improvement for sequential recommendation.
 
-## Paper
+## 1. Paper
 
 Luankang Zhang, Hao Wang, Zhongzhou Liu, Mingjia Yin, Yonghao Huang, Jiaqi Li, Wei Guo, Yong Liu, Huifeng Guo, Defu Lian, and Enhong Chen. **Can Recommender Systems Teach Themselves? A Recursive Self-Improving Framework with Fidelity Control.** In *Proceedings of the 43rd International Conference on Machine Learning (ICML 2026)*, Seoul, South Korea, 2026.
 
@@ -14,7 +14,7 @@ Luankang Zhang, Hao Wang, Zhongzhou Liu, Mingjia Yin, Yonghao Huang, Jiaqi Li, W
 
 RSIR is a closed-loop framework for sequential recommendation. Instead of relying on external data or a separate teacher model, the current recommender generates plausible user interaction sequences, filters them through fidelity-based quality control, and trains a successor model on the enriched dataset.
 
-## Highlights
+## 2. Highlights
 
 - **Recursive self-improvement:** a recommender uses its own predictive signal to generate additional training sequences.
 - **Fidelity control:** generated sequences are accepted only when they remain consistent with the user's approximate preference manifold.
@@ -22,7 +22,7 @@ RSIR is a closed-loop framework for sequential recommendation. Instead of relyin
 - **No external teacher required:** RSIR improves sparse recommendation data without relying on LLM-generated data or curated side information.
 - **Current code release:** this repository contains the SASRec implementation, the RSIR generation loop, evaluation utilities, and preprocessed data splits.
 
-## Method At A Glance
+## 3. Method At A Glance
 
 <p align="center">
   <img src="docs/assets/rsir-overview.png" alt="Overview of the Recursive Self-Improving Recommendation framework" width="860">
@@ -45,7 +45,7 @@ The main implementation path is:
 | Dataset loading by iteration suffix | `data/dataset.py` |
 | SASRec backbone | `model/sasrec.py` |
 
-## Repository Structure
+## 4. Repository Structure
 
 ```text
 RSIR/
@@ -60,7 +60,7 @@ RSIR/
 \-- run.py                # Main command-line entry point
 ```
 
-## Installation
+## 5. Installation
 
 Create a Python environment and install the core dependencies:
 
@@ -73,7 +73,7 @@ pip install torch numpy pandas pyyaml tqdm wandb torchmetrics matplotlib scipy f
 
 If you use a CUDA-specific PyTorch build, install PyTorch from the official command for your CUDA version before installing the remaining packages.
 
-## Data
+## 6. Data
 
 This release includes preprocessed splits and generated iteration files under `dataset/`.
 
@@ -101,9 +101,9 @@ The command-line argument `--trainfile` controls which training file is loaded:
 - `--trainfile "_1th"` loads `train_1th.pth`.
 - `--trainfile "_8th"` loads `train_8th.pth`.
 
-## Quick Start
+## 7. Quick Start
 
-### 1. Train a base recommender
+### 7.1 Train a base recommender
 
 Train SASRec on the original Amazon-Toys training split:
 
@@ -113,7 +113,7 @@ python run.py -m SASRec -d amazon-toys --trainfile "" --mode recommendation --de
 
 The best checkpoint is saved under the configured `eval.save_path`, currently `./saved/`.
 
-### 2. Generate RSIR augmented data
+### 7.2 Generate RSIR augmented data
 
 After training, pass the checkpoint path to the generation mode:
 
@@ -138,7 +138,7 @@ dataset/amazon-toys/toy/train_1th.pth
 
 The same suffix is used later with `--trainfile "_1th"` when training or evaluating on the generated iteration.
 
-### 3. Train on a generated iteration
+### 7.3 Train on a generated iteration
 
 Use a provided RSIR iteration file directly:
 
@@ -152,7 +152,7 @@ This command loads:
 dataset/amazon-sport/sport/train_8th.pth
 ```
 
-## Reproducing Paper Results
+## 8. Reproducing Paper Results
 
 The paper evaluates RSIR on multiple recommendation datasets and backbones. This code release currently provides the SASRec path and pre-generated iteration files for direct verification.
 
@@ -176,7 +176,7 @@ python run.py -m SASRec -d yelp --trainfile "" --mode recommendation --device 0
 python run.py -m SASRec -d yelp --trainfile "_8th" --mode recommendation --device 0
 ```
 
-## Generation Hyperparameters
+## 9. Generation Hyperparameters
 
 Generation settings are configured in `configs/basemodel.yaml`:
 
@@ -189,11 +189,11 @@ Generation settings are configured in `configs/basemodel.yaml`:
 
 The fidelity control step is implemented in `model/basemodel.py`. A generated step is accepted only when at least one remaining item from the user's real sequence is still ranked within the threshold after the synthetic context update.
 
-## Experimental Highlights
+## 10. Experimental Highlights
 
 The paper reports results across four datasets and three sequential recommendation backbones. The tables and figures below summarize the main empirical conclusions after the code usage sections.
 
-### Main Accuracy Gains
+### 10.1 Main Accuracy Gains
 
 SASRec results from Table 1 show that the best RSIR variant improves Recall@10 on every benchmark compared with the strongest non-RSIR baseline.
 
@@ -206,7 +206,7 @@ SASRec results from Table 1 show that the best RSIR variant improves Recall@10 o
 
 **Conclusion:** RSIR gives consistent single-iteration gains across sparse e-commerce and local-business recommendation datasets.
 
-### Recursive Self-Improvement
+### 10.2 Recursive Self-Improvement
 
 <p align="center">
   <img src="docs/assets/rsir-recursive-iterations.png" alt="RSIR performance over recursive iterations on Amazon-Sport and Yelp" width="720">
@@ -216,7 +216,7 @@ Figure 3 and Table 8 show that the gains compound over multiple recursive rounds
 
 **Conclusion:** the self-improving loop can keep adding useful signal over successive generations before performance saturates.
 
-### Fidelity Control Matters
+### 10.3 Fidelity Control Matters
 
 Table 2 isolates the fidelity-based quality control module on Amazon-Sport.
 
@@ -229,7 +229,7 @@ Table 2 isolates the fidelity-based quality control module on Amazon-Sport.
 
 **Conclusion:** simply accepting all generated interactions amplifies model errors, while fidelity control keeps recursive generation useful.
 
-### Generated Data Quality
+### 10.4 Generated Data Quality
 
 <p align="center">
   <img src="docs/assets/rsir-generated-data-analysis.png" alt="Analysis of generated data density and information density" width="680">
@@ -239,7 +239,7 @@ Figure 5 shows that RSIR increases both data density and information density. Th
 
 **Conclusion:** RSIR does not just add more interactions; it adds denser and more informative training sequences.
 
-### Robustness Under Noise
+### 10.5 Robustness Under Noise
 
 <p align="center">
   <img src="docs/assets/rsir-noise-robustness.png" alt="RSIR robustness under different synthetic noise ratios" width="760">
@@ -249,7 +249,7 @@ Appendix Figure 7 injects random noise into the training data. RSIR stays above 
 
 **Conclusion:** fidelity-controlled generation acts as a denoising regularizer instead of reinforcing noisy off-manifold interactions.
 
-## Notes For Maintainers
+## 11. Notes For Maintainers
 
 Before making the repository the public ICML release, we recommend checking the following items:
 
@@ -259,7 +259,9 @@ Before making the repository the public ICML release, we recommend checking the 
 - Consider moving large `.pth` files to GitHub Releases, Hugging Face, or Zenodo, then keep lightweight download instructions in this README.
 - Enable GitHub Pages from the `docs/` directory so the project page is served at `https://ustc-starteam.github.io/RSIR/`.
 
-## Citation
+<a id="citation"></a>
+
+## 12. Citation
 
 If you find this work useful, please cite:
 
@@ -285,7 +287,7 @@ The arXiv version is available as:
 }
 ```
 
-## Contact
+## 13. Contact
 
 For questions, please contact the first author or corresponding authors:
 
