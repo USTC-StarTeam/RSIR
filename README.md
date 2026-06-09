@@ -8,12 +8,9 @@ Official code for the ICML 2026 paper on recursive self-improvement for sequenti
 
 ## Paper
 
-| Item | Information |
-| --- | --- |
-| Title | **Can Recommender Systems Teach Themselves? A Recursive Self-Improving Framework with Fidelity Control** |
-| Authors | Luankang Zhang, Hao Wang, Zhongzhou Liu, Mingjia Yin, Yonghao Huang, Jiaqi Li, Wei Guo, Yong Liu, Huifeng Guo, Defu Lian, Enhong Chen |
-| Venue | Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), Seoul, South Korea |
-| Links | [Paper](https://arxiv.org/abs/2602.15659) / [PDF](https://arxiv.org/pdf/2602.15659) / [Project Page](https://ustc-starteam.github.io/RSIR/) / [Citation](#citation) |
+Luankang Zhang, Hao Wang, Zhongzhou Liu, Mingjia Yin, Yonghao Huang, Jiaqi Li, Wei Guo, Yong Liu, Huifeng Guo, Defu Lian, and Enhong Chen. **Can Recommender Systems Teach Themselves? A Recursive Self-Improving Framework with Fidelity Control.** In *Proceedings of the 43rd International Conference on Machine Learning (ICML 2026)*, Seoul, South Korea, 2026.
+
+[Paper](https://arxiv.org/abs/2602.15659) / [PDF](https://arxiv.org/pdf/2602.15659) / [Project Page](https://ustc-starteam.github.io/RSIR/) / [Citation](#citation)
 
 RSIR is a closed-loop framework for sequential recommendation. Instead of relying on external data or a separate teacher model, the current recommender generates plausible user interaction sequences, filters them through fidelity-based quality control, and trains a successor model on the enriched dataset.
 
