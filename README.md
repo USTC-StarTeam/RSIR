@@ -37,6 +37,66 @@ The main implementation path is:
 | Dataset loading by iteration suffix | `data/dataset.py` |
 | SASRec backbone | `model/sasrec.py` |
 
+## Experimental Highlights
+
+The paper reports results across four datasets and three sequential recommendation backbones. The tables and figures below surface the main empirical conclusions directly in the README.
+
+### Main Accuracy Gains
+
+SASRec results from Table 1 show that the best RSIR variant improves Recall@10 on every benchmark compared with the strongest non-RSIR baseline.
+
+| Dataset | Best non-RSIR Recall@10 | Best RSIR Recall@10 | Relative gain |
+| --- | ---: | ---: | ---: |
+| Amazon-Toys | 0.0834 | 0.0872 | +4.56% |
+| Amazon-Beauty | 0.0557 | 0.0594 | +6.64% |
+| Amazon-Sport | 0.0495 | 0.0512 | +3.43% |
+| Yelp | 0.0379 | 0.0399 | +5.28% |
+
+**Conclusion:** RSIR gives consistent single-iteration gains across sparse e-commerce and local-business recommendation datasets.
+
+### Recursive Self-Improvement
+
+<p align="center">
+  <img src="docs/assets/rsir-recursive-iterations.png" alt="RSIR performance over recursive iterations on Amazon-Sport and Yelp" width="720">
+</p>
+
+Figure 3 and Table 8 show that the gains compound over multiple recursive rounds. On Amazon-Sport, Recall@10 rises from 0.0474 at the base round to 0.0528 by the 3rd RSIR round; on Yelp, it rises from 0.0371 to 0.0420.
+
+**Conclusion:** the self-improving loop can keep adding useful signal over successive generations before performance saturates.
+
+### Fidelity Control Matters
+
+Table 2 isolates the fidelity-based quality control module on Amazon-Sport.
+
+| Setting | NDCG@10 | Recall@10 | Readout |
+| --- | ---: | ---: | --- |
+| SASRec base | 0.0271 | 0.0474 | Original training data |
+| RSIR-1st with fidelity control | 0.0293 | 0.0512 | Immediate gain |
+| RSIR-3rd without fidelity control | 0.0119 | 0.0210 | Recursive collapse |
+| RSIR-3rd with fidelity control | 0.0298 | 0.0528 | Stable improvement |
+
+**Conclusion:** simply accepting all generated interactions amplifies model errors, while fidelity control keeps recursive generation useful.
+
+### Generated Data Quality
+
+<p align="center">
+  <img src="docs/assets/rsir-generated-data-analysis.png" alt="Analysis of generated data density and information density" width="680">
+</p>
+
+Figure 5 shows that RSIR increases both data density and information density. The generated data density grows from 0.0004 in the raw data to 0.0016 by RSIR-8th, and the Approximate Entropy score reaches 0.3861, while naive insertion drops to 0.3136.
+
+**Conclusion:** RSIR does not just add more interactions; it adds denser and more informative training sequences.
+
+### Robustness Under Noise
+
+<p align="center">
+  <img src="docs/assets/rsir-noise-robustness.png" alt="RSIR robustness under different synthetic noise ratios" width="760">
+</p>
+
+Appendix Figure 7 injects random noise into the training data. RSIR stays above the base model across the full tested noise range on both Amazon-Sport and Yelp.
+
+**Conclusion:** fidelity-controlled generation acts as a denoising regularizer instead of reinforcing noisy off-manifold interactions.
+
 ## Repository Structure
 
 ```text
