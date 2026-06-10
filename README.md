@@ -289,8 +289,9 @@ The arXiv version is available as:
 
 ## 13. Contact
 
-For questions, please contact the first author or corresponding authors:
+For paper questions, please contact:
 
-- Luankang Zhang: `zhanglk5@mail.ustc.edu.cn`
-- Hao Wang: `wanghao3@ustc.edu.cn`
-- Wei Guo: `guowei67@huawei.com`
+- First author: Luankang Zhang (`zhanglk5@mail.ustc.edu.cn`)
+- Corresponding authors: Hao Wang (`wanghao3@ustc.edu.cn`) and Wei Guo (`guowei67@huawei.com`)
+
+For repository issues, please open a GitHub issue in this repository.
